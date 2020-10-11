@@ -132,13 +132,12 @@ for i in ${OBJECTS}; do
       echo ". '${j}' is up to date"
     else
       echo "+ updating '$j'"
-      echo "# zfs rollback ${j}${old}"
+      echo "# zfs rollback -R ${j}${old}"
       if [[ $CONFIRM -eq 1 ]]; then
-        zfs rollback "${j}${old}"
+        zfs rollback -R "${j}${old}"
       fi
-      echo "# zfs send $dryrun $verbose -p -w -I $old ${i}${now} | ${show[@]}"
-      zfs send $dryrun $verbose -p -w -I $old "${i}${now}" | ${recv[@]}
+      echo "# zfs send $dryrun $verbose -w -I $old ${i}${now} | ${show[@]}"
+      zfs send $dryrun $verbose -w -I $old "${i}${now}" | ${recv[@]}
     fi
   fi
 done
-
